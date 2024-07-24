@@ -22,7 +22,7 @@ const VisuallyHiddenInput = styled('input')({
 
 export default function InputFileUpload() {
   const [uploaded, setUploaded] = useState(0);
-
+  const [fileName, setFileName] = useState('');
   async function Submit(e) {
     e.preventDefault();
     try {
@@ -36,6 +36,7 @@ export default function InputFileUpload() {
             setUploaded(Math.round((data.loaded / data.total) * 100));
           },
         });
+
         console.log(response.data);
       } else {
         console.log('No file selected');
@@ -44,7 +45,14 @@ export default function InputFileUpload() {
       console.log(error);
     }
   }
-
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      setFileName(file.name);
+    } else {
+      setFileName('');
+    }
+  }
   return (
     <form onSubmit={Submit}>
       <Button
@@ -53,8 +61,9 @@ export default function InputFileUpload() {
         startIcon={<CloudUploadIcon />}
       >
         Upload file
-        <VisuallyHiddenInput type="file" name="file" />
+        <VisuallyHiddenInput type="file" name="file" onChange={handleFileChange} />
       </Button>
+      {fileName && <p>{fileName}</p>}
       {uploaded > 0 && (
         <div>
           <LinearWithValueLabel progress={uploaded} />
