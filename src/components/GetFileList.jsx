@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function GetFileList({ render, setRender }) {
+function GetFileList({ render, setRerender }) {
   const [fileList, setFileList] = useState([]);
 
   async function getFile() {
     try {
       let response = await axios.get('http://localhost:4000/files');
       setFileList(response.data);  // Assuming response.data is an array
-      console.log(response)
+     // console.log(response)
     } catch (error) {
       console.log(error);
     }
